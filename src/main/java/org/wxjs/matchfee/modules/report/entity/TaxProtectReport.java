@@ -4,8 +4,8 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.apache.commons.httpclient.util.DateUtil;
 import org.wxjs.matchfee.common.config.Global;
+import org.wxjs.matchfee.common.utils.DateUtils;
 import org.wxjs.matchfee.common.utils.Util;
 import org.wxjs.matchfee.common.utils.excel.annotation.ExcelField;
 import org.wxjs.matchfee.modules.charge.entity.Charge;
@@ -116,7 +116,7 @@ public class TaxProtectReport extends Charge{
 	
 	@ExcelField(title="征收时间", type=1, align=2, sort=120)
 	public String getChargeDate() {
-		return DateUtil.formatDate(super.getMaxPayDate(),"yyyy-MM-dd");
+		return DateUtils.formatDate(super.getMaxPayDate(),"yyyy-MM-dd");
 	}
 
 	public String getMatchArea() {
