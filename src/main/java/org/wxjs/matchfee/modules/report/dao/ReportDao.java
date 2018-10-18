@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.wxjs.matchfee.common.persistence.BaseDao;
 import org.wxjs.matchfee.common.persistence.annotation.MyBatisDao;
+import org.wxjs.matchfee.modules.report.entity.ReportEntity;
 import org.wxjs.matchfee.modules.report.entity.ReportParam;
 import org.wxjs.matchfee.modules.report.entity.TaxProtectReport;
 
@@ -26,5 +27,9 @@ public interface ReportDao extends BaseDao{
 	public  Collection<HashMap<String, Object>> dashboardChargeStatus();
 	
 	public List<TaxProtectReport> taxProtect(ReportParam reportParam);
+	
+	public List<ReportEntity> monthCountMoneyReport(ReportParam reportParam);
+	
+	public List<ReportEntity> yearCountMoneyReport(ReportParam reportParam);
 
 }

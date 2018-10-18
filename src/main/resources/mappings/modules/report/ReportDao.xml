@@ -65,14 +65,12 @@
 		`month`) v
 		left join
 		(
-		select DATE_FORMAT(mpt.max_pay_date,'%Y-%m') month,SUM(t.pay_money) report 
+		select DATE_FORMAT(mpt.pay_date,'%Y-%m') month,SUM(t.pay_money) report 
 		from tcharge t
-		left join (select pt.charge_id, max(pt.pay_date) max_pay_date
-		from tpay_ticket pt
-		group by pt.charge_id) mpt on mpt.charge_id=t.id
+		left join v_pay_ticket mpt on mpt.charge_id=t.id
 		where t.status='40'
 		and t.del_flag='0'
-		and DATE_FORMAT(mpt.max_pay_date,'%Y-%m')>
+		and DATE_FORMAT(mpt.pay_date,'%Y-%m')>
 		DATE_FORMAT(date_sub(curdate(), interval 12 month),'%Y-%m')
 		group by month
 		) b
@@ -112,4 +110,27 @@
 		WHERE DATE_FORMAT(pt.pay_date,'%Y-%m') =DATE_FORMAT(#{dateFrom},'%Y-%m')
 		
 	</select>	
+	
+	<select id="monthCountMoneyReport" resultType="org.wxjs.matchfee.modules.report.entity.ReportEntity">
+		SELECT DATE_FORMAT(mpt.pay_date,'%Y-%m') 'month', count(*) 'count', sum(a.pay_money) 'money' 
+		FROM tcharge a
+		LEFT JOIN v_pay_ticket mpt on mpt.charge_id=a.id
+		WHERE a.status='40'
+		AND DATE_FORMAT(mpt.pay_date,'%Y-%m') &gt;= DATE_FORMAT(#{dateFrom},'%Y-%m')
+		AND DATE_FORMAT(mpt.pay_date,'%Y-%m') &lt;= DATE_FORMAT(#{dateTo},'%Y-%m')
+		GROUP BY DATE_FORMAT(mpt.pay_date,'%Y-%m')
+		ORDER BY DATE_FORMAT(mpt.pay_date,'%Y-%m')
+	</select>
+	
+	<select id="yearCountMoneyReport" resultType="org.wxjs.matchfee.modules.report.entity.ReportEntity">
+		SELECT DATE_FORMAT(mpt.pay_date,'%Y') 'year', count(*) 'count', sum(a.pay_money) 'money' 
+		FROM tcharge a
+		LEFT JOIN v_pay_ticket mpt on mpt.charge_id=a.id
+		WHERE a.status='40'
+		AND DATE_FORMAT(mpt.pay_date,'%Y') &gt;= DATE_FORMAT(#{dateFrom},'%Y')
+		AND DATE_FORMAT(mpt.pay_date,'%Y') &lt;= DATE_FORMAT(#{dateTo},'%Y')
+		GROUP BY DATE_FORMAT(mpt.pay_date,'%Y')
+		ORDER BY DATE_FORMAT(mpt.pay_date,'%Y')	
+	</select>	
+		
 	</mapper>

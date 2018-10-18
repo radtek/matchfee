@@ -25,7 +25,19 @@
 	<form:form id="searchForm" modelAttribute="reportParam" action="${ctx}/report/report/query" method="post" class="breadcrumb form-search">
         <form:hidden path="reportType"/>
 		<ul class="ul-form">
-			<li>				
+			<li>
+			<c:choose>
+			   <c:when test="${reportParam.reportType eq 'yearTimes' }">
+			    <label>年份 ：</label>
+				<input name="dateFrom" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${reportParam.dateFrom}" pattern="yyyy"/>"
+					onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+				<label>到：</label>
+				<input name="dateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${reportParam.dateTo}" pattern="yyyy"/>"
+					onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>			   
+			   </c:when>
+			   <c:otherwise>
 			    <label>月份 ：</label>
 				<input name="dateFrom" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${reportParam.dateFrom}" pattern="yyyy-MM"/>"
@@ -33,7 +45,10 @@
 				<label>到：</label>
 				<input name="dateTo" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${reportParam.dateTo}" pattern="yyyy-MM"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM',isShowClear:false});"/>
+					onclick="WdatePicker({dateFmt:'yyyy-MM',isShowClear:false});"/>			   
+			   </c:otherwise>
+			</c:choose>			
+
 			</li>			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value=" 查 询 "/>
 			

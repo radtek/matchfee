@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wxjs.matchfee.common.config.Global;
+import org.wxjs.matchfee.common.persistence.Page;
 import org.wxjs.matchfee.common.service.BaseService;
 import org.wxjs.matchfee.common.utils.DateUtils;
 import org.wxjs.matchfee.common.utils.Util;
+import org.wxjs.matchfee.modules.charge.entity.Charge;
 import org.wxjs.matchfee.modules.report.dao.ChargeReportDao;
 import org.wxjs.matchfee.modules.report.dao.ReportDao;
 import org.wxjs.matchfee.modules.report.dataModel.ChartData;
@@ -24,6 +26,7 @@ import org.wxjs.matchfee.modules.report.dataModel.PieData;
 import org.wxjs.matchfee.modules.report.dataModel.ReportData;
 import org.wxjs.matchfee.modules.report.dataModel.TableColModel;
 import org.wxjs.matchfee.modules.report.dataModel.TableData;
+import org.wxjs.matchfee.modules.report.entity.ReportEntity;
 import org.wxjs.matchfee.modules.report.entity.ReportParam;
 import org.wxjs.matchfee.modules.report.entity.TaxProtectReport;
 
@@ -38,7 +41,7 @@ public class ReportService extends BaseService{
 	@Autowired
 	public ReportDao reportDao;
 	
-	public static enum reportTypes {monthTimes, monthMoney};
+	public static enum reportTypes {monthTimes, yearTimes};
 	
 	public static final String columnReport = "columnReport";
 	
@@ -50,7 +53,7 @@ public class ReportService extends BaseService{
     
     static{
     	ChartTypeMap.put(reportTypes.monthTimes.toString(), columnReport);
-    	ChartTypeMap.put(reportTypes.monthMoney.toString(), columnReport);
+    	ChartTypeMap.put(reportTypes.yearTimes.toString(), columnReport);
     }
     
     @Autowired
@@ -69,9 +72,9 @@ public class ReportService extends BaseService{
 		if(reportType.equalsIgnoreCase(reportTypes.monthTimes.toString())){
 			title = "MONTH_TIMES_REPORT";
 			label = "MONTH";
-		}else if(reportType.equalsIgnoreCase(reportTypes.monthMoney.toString())){
-			title = "MONTH_MONEY_REPORT";
-			label = "MONTH";
+		}else if(reportType.equalsIgnoreCase(reportTypes.yearTimes.toString())){
+			title = "YEAR_TIMES_REPORT";
+			label = "YEAR";
 		}
 		
 		String chartType = ChartTypeMap.get(reportType);
@@ -135,6 +138,46 @@ public class ReportService extends BaseService{
 		
 		return rst;
 	}
+    
+    public List<ReportEntity> getMonthCountMoneyReport(ReportParam param) {
+
+    	List<ReportEntity> list = reportDao.monthCountMoneyReport(param);
+    	
+    	int totalCount = 0;
+    	double totalMoney = 0;
+    	for(ReportEntity entity : list){
+    		totalCount = totalCount + entity.getCount();
+    		totalMoney += entity.getMoney();
+    	}
+    	ReportEntity entity = new ReportEntity();
+    	entity.setMonth("小计");
+    	entity.setCount(totalCount);
+    	entity.setMoney(totalMoney);
+    	
+    	list.add(entity);
+    	
+    	return list;
+	}
+    
+    public List<ReportEntity> getYearCountMoneyReport(ReportParam param) {
+
+    	List<ReportEntity> list = reportDao.yearCountMoneyReport(param);
+    	
+    	int totalCount = 0;
+    	double totalMoney = 0;
+    	for(ReportEntity entity : list){
+    		totalCount = totalCount + entity.getCount();
+    		totalMoney += entity.getMoney();
+    	}
+    	ReportEntity entity = new ReportEntity();
+    	entity.setYear("小计");
+    	entity.setCount(totalCount);
+    	entity.setMoney(totalMoney);
+    	
+    	list.add(entity);
+    	
+    	return list;
+	}
 	
 	protected List<TableColModel> getColModels(ReportParam param, String firstColumnTitle){
 		List<TableColModel> colModels = new ArrayList<TableColModel>();
@@ -150,8 +193,8 @@ public class ReportService extends BaseService{
 		String rst = "";
 		if(param.getReportType().equalsIgnoreCase(reportTypes.monthTimes.toString())){
 			rst = "REPORT_TIMES";
-		}else if(param.getReportType().equalsIgnoreCase(reportTypes.monthMoney.toString())){
-			rst = "CHARGE_MONEY";
+		}else if(param.getReportType().equalsIgnoreCase(reportTypes.yearTimes.toString())){
+			rst = "REPORT_TIMES";
 		}
 		return rst;
 	}
@@ -160,8 +203,8 @@ public class ReportService extends BaseService{
 		String rst = "";
 		if(param.getReportType().equalsIgnoreCase(reportTypes.monthTimes.toString())){
 			rst = "UNIT_TIMES";
-		}else if(param.getReportType().equalsIgnoreCase(reportTypes.monthMoney.toString())){
-			rst = "UNIT_YUAN";
+		}else if(param.getReportType().equalsIgnoreCase(reportTypes.yearTimes.toString())){
+			rst = "UNIT_TIMES";
 		}
 		return rst;
 	}
@@ -191,6 +234,14 @@ public class ReportService extends BaseService{
 		}
 		
 		return list;
+	}
+	
+	public List<Charge> monthlyReport(Charge charge){
+		return null;
+	}
+	
+	public List<Charge> yearlyReport(Charge charge){
+		return null;
 	}
 	
 }

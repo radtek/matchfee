@@ -438,6 +438,39 @@ public class ChargeService extends CrudService<ChargeDao, Charge> {
 		return flag;
 	}
 	
+	public List<Charge> monthlyReport(Charge charge){
+		List<Charge> list = dao.monthlyReport(charge);
+		
+		this.addSum(list);
+		
+		return list;
+	}
+	
+	public List<Charge> yearlyReport(Charge charge){
+		List<Charge> list = dao.yearlyReport(charge);
+		
+		this.addSum(list);
+		
+		return list;
+	}
+	
+	private void addSum(List<Charge> list){
+		double totalCal = 0;
+		double totalPay = 0;
+		int seq = 0;
+		for(Charge entity : list){
+			totalCal += Util.getDouble(entity.getCalMoney());
+			totalPay += Util.getDouble(entity.getPayMoney());
+			seq ++;
+			entity.setSeq(seq + "");
+		}
+		Charge entity = new Charge();
+		entity.setReportEntity("小计");
+		entity.setCalMoney(Util.getString(totalCal));
+		entity.setPayMoney(Util.getString(totalPay));
+		list.add(entity);
+	}
+	
 	
 	
 }

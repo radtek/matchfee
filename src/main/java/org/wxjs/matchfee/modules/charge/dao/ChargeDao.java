@@ -35,4 +35,8 @@ public interface ChargeDao extends CrudDao<Charge> {
 	
 	public List<Charge> getHistoryCharges(Charge charge);
 	
+	public List<Charge> monthlyReport(Charge charge);
+	
+	public List<Charge> yearlyReport(Charge charge);
+	
 }

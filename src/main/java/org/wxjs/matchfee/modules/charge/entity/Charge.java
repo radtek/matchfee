@@ -18,6 +18,7 @@ import org.wxjs.matchfee.common.config.Global;
 import org.wxjs.matchfee.common.persistence.DataEntity;
 import org.wxjs.matchfee.common.utils.DateUtils;
 import org.wxjs.matchfee.common.utils.Util;
+import org.wxjs.matchfee.common.utils.excel.annotation.ExcelField;
 import org.wxjs.matchfee.modules.sys.entity.User;
 import org.wxjs.matchfee.modules.sys.utils.DictUtils;
 
@@ -56,6 +57,7 @@ public class Charge extends DataEntity<Charge> {
 	
 	private String dateType;    //日期类型， 1：按缴费时间查询， 其他：按申报日期查询
 	
+	
 	private Date dateFrom;		// 时间 从
 	private Date dateTo;		// 时间 到
 	
@@ -77,12 +79,19 @@ public class Charge extends DataEntity<Charge> {
 	
 	private boolean opinionBookApproved = false;
 	
+	private String seq; //临时属性，序号
+	
 	public Charge() {
 		super();
 	}
 
 	public Charge(String id){
 		super(id);
+	}
+	
+	@ExcelField(title="编号", type=1, align=2, sort=10)
+	public String getId(){
+		return this.id;
 	}
 	
 	public Project getProject() {
@@ -92,8 +101,19 @@ public class Charge extends DataEntity<Charge> {
 	public void setProject(Project project) {
 		this.project = project;
 	}
+	
+	@ExcelField(title="项目代码", type=1, align=2, sort=20)
+	public String getProjectNum(){
+		return this.project.getPrjNum();
+	}
+	
+	@ExcelField(title="项目名称", type=1, align=2, sort=40)
+	public String getProjectName(){
+		return this.project.getPrjName();
+	}
 
 	@Length(min=1, max=256, message="申报单位长度必须介于 1 和 256 之间")
+	@ExcelField(title="申报单位", type=1, align=2, sort=30)
 	public String getReportEntity() {
 		return reportEntity;
 	}
@@ -105,6 +125,11 @@ public class Charge extends DataEntity<Charge> {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getReportDate() {
 		return reportDate;
+	}
+	
+	@ExcelField(title="申报日期", type=1, align=2, sort=50)
+	public String getReportDateExport() {
+		return DateUtils.formatDate(reportDate,"yyyy-MM-dd");
 	}
 	
 	public String getReportDateYYYYMMDD() {
@@ -153,6 +178,11 @@ public class Charge extends DataEntity<Charge> {
 	
 	public String getCalMoney() {
 		return Util.formatDecimal(calMoney, Global.DecimalFormat);
+	}
+	
+	@ExcelField(title="结算金额", type=1, align=3, sort=60)
+	public String getCalMoneyExport() {
+		return Util.formatMoneyArea(calMoney);
 	}
 
 	public void setCalMoney(String calMoney) {
@@ -206,12 +236,18 @@ public class Charge extends DataEntity<Charge> {
 	public void setConfirmMemo(String confirmMemo) {
 		this.confirmMemo = confirmMemo;
 	}
+	
+	@ExcelField(title="缴费金额", type=1, align=3, sort=80)
+	public String getPayMoneyExport() {
+		return Util.formatMoneyArea(payMoney);
+	}
 
 	@Length(min=1, max=8, message="状态长度必须介于 1 和 8 之间")
 	public String getStatus() {
 		return status;
 	}
 	
+	@ExcelField(title="状态", type=1, align=2, sort=100)
 	public String getStatusLabel() {
 		String label = DictUtils.getDictLabel(this.status, "charge_status", "");
 		
@@ -290,6 +326,11 @@ public class Charge extends DataEntity<Charge> {
 			}
 		}
 		return rst;		
+	}
+	
+	@ExcelField(title="缴费日期", type=1, align=2, sort=70)
+	public String getMaxPayDateExport() {
+		return DateUtils.formatDate(maxPayDate,"yyyy-MM-dd");
 	}
 	
 	public Date getMaxPayDate() {
@@ -434,6 +475,15 @@ public class Charge extends DataEntity<Charge> {
 
 	public void setOpinionBookApproved(boolean opinionBookApproved) {
 		this.opinionBookApproved = opinionBookApproved;
+	}
+
+	@ExcelField(title="序号", type=1, align=2, sort=5)
+	public String getSeq() {
+		return seq;
+	}
+
+	public void setSeq(String seq) {
+		this.seq = seq;
 	}
 	
 }

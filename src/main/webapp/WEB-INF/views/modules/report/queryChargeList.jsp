@@ -70,15 +70,16 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-			    <th>编号</th>
-				<th>项目代码</th>
+			    <th>代码</th>
+				<th>项目编号</th>
+				<th>申报单位</th>
 				<th>项目名称</th>
 				<th>项目地址</th>
 				<th>申报人</th>
-				<th>申报单位</th>
-				<th>申报时间</th>
-				<th>测算金额</th>
-				<th>付款金额</th>
+				<th>申报日期</th>
+				<th>结算金额</th>
+				<th>缴费日期</th>
+				<th>缴费金额</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -93,6 +94,9 @@
 					${charge.project.prjNum}
 				</td>
 				<td>
+					${charge.reportEntity}
+				</td>				
+				<td>
 					${charge.project.prjName}
 				</td>
 				<td>
@@ -101,15 +105,16 @@
 				<td>
 					${charge.reportStaff.name}
 				</td>
+
 				<td>
-					${charge.reportEntity}
-				</td>
-				<td>
-					<fmt:formatDate value="${charge.reportDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${charge.reportDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td style="text-align:right">
 					<fmt:formatNumber value="${charge.calMoney}" pattern="#,##0.00"/>
 				</td>
+				<td>
+					<fmt:formatDate value="${charge.maxPayDate}" pattern="yyyy-MM-dd"/>
+				</td>				
 				<td style="text-align:right">
 					<fmt:formatNumber value="${charge.payMoney}" pattern="#,##0.00"/>
 				</td>
