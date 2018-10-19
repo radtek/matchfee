@@ -121,7 +121,7 @@ public class ReportController extends BaseController {
 		}else{
 			if(reportParam.getDateFrom()==null){
 				Calendar cal=Calendar.getInstance();
-				cal.add(Calendar.MONTH, -12);
+				cal.set(cal.get(Calendar.YEAR), 0, 1);
 				reportParam.setDateFrom(cal.getTime());
 			}
 			
@@ -153,7 +153,7 @@ public class ReportController extends BaseController {
 
 		if(reportParam.getDateFrom()==null){
 			Calendar cal=Calendar.getInstance();
-			cal.add(Calendar.MONTH, -12);
+			cal.set(cal.get(Calendar.YEAR), 0, 1);
 			reportParam.setDateFrom(cal.getTime());
 		}
 		
