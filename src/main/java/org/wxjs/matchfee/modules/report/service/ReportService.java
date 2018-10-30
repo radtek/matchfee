@@ -150,7 +150,7 @@ public class ReportService extends BaseService{
     		totalMoney += entity.getMoney();
     	}
     	ReportEntity entity = new ReportEntity();
-    	entity.setMonth("小计");
+    	entity.setMonth("合计");
     	entity.setCount(totalCount);
     	entity.setMoney(totalMoney);
     	
