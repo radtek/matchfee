@@ -5,14 +5,19 @@ package org.wxjs.matchfee.modules.charge.entity;
 
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
+import java.text.MessageFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+
+import freemarker.template.utility.DateUtil;
 
 import org.wxjs.matchfee.common.config.Global;
 import org.wxjs.matchfee.common.persistence.DataEntity;
@@ -44,6 +49,8 @@ public class Charge extends DataEntity<Charge> {
 	private User approveStaff;		// 审核人
 	private Date approveDate;		// 审核时间
 	private String approveMemo;		// 审核备注
+	private String paymentCode;     //缴款码
+	private String virtualBankAccount;     //虚拟账号
 	private User confirmStaff;		// 确认人
 	private Date confirmDate;		// 确认时间
 	private String confirmMemo;		// 确认备注
@@ -227,6 +234,22 @@ public class Charge extends DataEntity<Charge> {
 
 	public void setApproveMemo(String approveMemo) {
 		this.approveMemo = approveMemo;
+	}
+	
+	public String getPaymentCode() {
+		return paymentCode;
+	}
+
+	public void setPaymentCode(String paymentCode) {
+		this.paymentCode = paymentCode;
+	}
+
+	public String getVirtualBankAccount() {
+		return virtualBankAccount;
+	}
+
+	public void setVirtualBankAccount(String virtualBankAccount) {
+		this.virtualBankAccount = virtualBankAccount;
 	}
 
 	public String getConfirmMemo() {
@@ -484,6 +507,29 @@ public class Charge extends DataEntity<Charge> {
 
 	public void setSeq(String seq) {
 		this.seq = seq;
+	}
+	
+	public String getBankAccountMemo(){
+		String memo = "";
+		
+		String startDateStr = Global.getConfig("BANK_ACCOUNT_JKM_START_DATE");
+		
+		Date startDate = DateUtils.parseDate(startDateStr);
+		
+		if(this.createDate.compareTo(startDate)<0 && (StringUtils.isEmpty(this.paymentCode) || this.paymentCode.startsWith("0000000000"))){
+			memo = Global.getConfig("BANK_ACCOUNT");
+		}else{
+			String memoTemp = Global.getConfig("BANK_ACCOUNT_JKM");
+			
+			MessageFormat mf = new MessageFormat(memoTemp);
+			
+			String[] params = {
+					Util.getString(this.getPaymentCode()),
+					Util.getString(this.getVirtualBankAccount())
+			};		
+			memo = mf.format(params);
+		}
+		return memo;
 	}
 	
 }

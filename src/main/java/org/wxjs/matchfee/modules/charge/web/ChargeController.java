@@ -232,6 +232,23 @@ public class ChargeController extends BaseController {
 		String fromMenu = Util.getString(request.getParameter("fromMenu"));
 		
 		return "redirect:"+Global.getAdminPath()+"/charge/charge/"+fromMenu+"?repage";
+	}
+	
+	@RequiresPermissions("charge:charge:view")
+	@RequestMapping(value = {"paymentCodeList"})
+	public String paymentCodeList(Charge charge, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		
+		//charge.setReportStaff(user);
+		
+		charge.setStatus(Global.CHARGE_STATUS_TO_PAYMENT_CODE);
+		
+		List<Charge> list = chargeService.findList(charge); 
+		model.addAttribute("list", list);
+		
+		model.addAttribute("fromMenu", "paymentCodeList");
+		
+		return "modules/charge/myChargeList_postSubmit";
 	}	
 	
 	@RequiresPermissions("charge:charge:view")
@@ -646,7 +663,9 @@ public class ChargeController extends BaseController {
 
 		charge.setApproveDate(Calendar.getInstance().getTime());
 		
-		charge.setStatus(Global.CHARGE_STATUS_TO_UPLOAD);
+		//charge.setStatus(Global.CHARGE_STATUS_TO_UPLOAD);
+		
+		charge.setStatus(Global.CHARGE_STATUS_TO_PAYMENT_CODE);
 		
 		chargeService.updateApprove(charge);
 		
@@ -676,6 +695,30 @@ public class ChargeController extends BaseController {
 		
 		addMessage(redirectAttributes, "保存征收成功");
 		return "redirect:"+Global.getAdminPath()+"/charge/charge/approvelist?repage";
+	}
+	
+	@RequiresPermissions("charge:charge:edit")
+	@RequestMapping(value = "updatePaymentCode")
+	public String updatePaymentCode(Charge charge, Model model, RedirectAttributes redirectAttributes) {
+		
+		charge.setStatus(null);
+		chargeService.updatePaymentCode(charge);
+		operationLogService.logApprove(charge.getId(), "缴款码", "保存");
+		
+		addMessage(redirectAttributes, "保存缴款码成功");
+		return "redirect:"+Global.getAdminPath()+"/charge/charge/defaultTab?id="+charge.getId();		
+	}
+	
+	@RequiresPermissions("charge:charge:edit")
+	@RequestMapping(value = "updatePaymentCodePass")
+	public String updatePaymentCodePass(Charge charge, Model model, RedirectAttributes redirectAttributes) {
+		//save
+		charge.setStatus(Global.CHARGE_STATUS_TO_UPLOAD);
+		chargeService.updatePaymentCode(charge);
+		operationLogService.logApprove(charge.getId(), "缴款码", "提交");
+		
+		addMessage(redirectAttributes, "保存缴款码成功");
+		return "redirect:"+Global.getAdminPath()+"/charge/charge/defaultTab?id="+charge.getId();		
 	}
 	
 	@RequiresPermissions("charge:charge:edit")

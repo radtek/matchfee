@@ -25,6 +25,7 @@
 				<th>申报时间</th>
 				<th>结算金额</th>
 				<th>缴费金额</th>
+				<th>缴费时间</th>
 				<th>状态</th>
 				<shiro:hasPermission name="charge:charge:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -57,11 +58,14 @@
 					<fmt:formatNumber value="${charge.payMoney}" pattern="#,##0.00"/>
 				</td>
 				<td>
+					<fmt:formatDate value="${charge.maxPayDate}" pattern="yyyy-MM-dd"/>
+				</td>				
+				<td>
 					${charge.statusLabel}
 				</td>
 				<shiro:hasPermission name="charge:charge:edit"><td>
 				   <c:choose>
-				      <c:when test="${charge.status eq '10' || charge.status eq '20'}">
+				      <c:when test="${charge.status eq '10' || charge.status eq '20' || charge.status eq '25'}">
 				        <a href="${ctx}/charge/charge/defaultTab?id=${charge.id}">进入</a>
 				        <a href="${ctx}/charge/charge/showSettlementList?id=${charge.id}" target="_blank">结算清单</a>
 		   			  </c:when>

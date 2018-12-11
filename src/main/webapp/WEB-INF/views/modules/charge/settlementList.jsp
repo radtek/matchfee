@@ -73,7 +73,7 @@
     </c:if>
     <div id="printDiv" style="margin:20px 20px 20px 20px">
       <div style="align:center; margin: 0 auto;width:100%">
-      <font size="5" color="blue">无锡市城市基础设施配套费结算清单</font>
+      <font size="5" color="blue">无锡市城市基础设施配套费结算清单<c:if test="${settementList.charge.status lt '30'}">（未审核）</c:if></font>
       </div>
 	
 	<matchfee:chargeViewWithoutHistory charge="${settementList.charge}"></matchfee:chargeViewWithoutHistory><br>
@@ -198,7 +198,7 @@
 					
 					<fmt:formatNumber value="${payTicket.money}" pattern="#,##0.00"/>
 				</td>
-				<td style="text-align:right">
+				<td>
 					${payTicket.description}
 				</td>				
 				<td>
@@ -217,12 +217,12 @@
 			  </c:otherwise>
 			</c:choose>
 			-->
-			    <td>待清算金额</td>
+			    <td>待清算金额（元）</td>
 				<td></td>
 				<td style="text-align:right">
 				<fmt:formatNumber value="${settementList.charge.moneyGap}" pattern="#,##0.00"/>
 				</td>
-				<td colspan="2" align="left">${fns:getConfig('BANK_ACCOUNT')}</td>
+				<td colspan="2" align="left">${settementList.charge.bankAccountMemo}</td>
 			</tr>								
 		</tbody>
 	</table>	

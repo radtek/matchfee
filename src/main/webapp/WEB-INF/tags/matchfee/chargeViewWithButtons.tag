@@ -72,6 +72,34 @@
 
 	    }
 	    
+	    function updatePaymentCode(){
+	    	if(checkPaymentCode()){
+				$("#chargeForm").attr("action","${ctx}/charge/charge/updatePaymentCode");
+				$("#chargeForm").submit();	    		
+	    	}	    	
+	    }
+	    
+	    function updatePaymentCodePass(){
+	    	if(checkPaymentCode()){
+				$("#chargeForm").attr("action","${ctx}/charge/charge/updatePaymentCodePass");
+				$("#chargeForm").submit();	    		
+	    	}
+	    }
+	    
+	    function checkPaymentCode(){
+	    	var id = $("#id").val();
+	    	var paymentCode = $("#paymentCode").val();
+	    	var virtualBankAccount = $("#virtualBankAccount").val();
+	    	
+	    	var paymentCodeFormat = /^\d{20}$/;
+
+	    	var flag = paymentCodeFormat.test(paymentCode);
+	    	if(!flag){
+	    		alert("请正确填写缴款码，应为20位数字！");
+	    	}
+	    	return flag;
+	    }
+	    
 	    function uploadPass(){
 	    	
 	    	var isEmptyList = ${empty charge.payTicketList};
@@ -229,7 +257,27 @@
 					    <fmt:formatNumber value="${charge.calMoney}" pattern="#,##0.00"/>
 					</td>				
 				</tr>	
+
+				<c:if test="${charge.status eq '25' or charge.status eq '30'}">
+				<tr>
+					<td class="tit">缴款码：</td>
+					<td><input id="paymentCode" name="paymentCode" type="text" value="${charge.paymentCode}"/>
+					<span class="help-inline"><font color="red">*</font> </span></td>
+					<td class="tit">虚拟账号：</td>
+					<td><input id="virtualBankAccount" name="virtualBankAccount" type="text" value="${charge.virtualBankAccount}"/>
+					<input id="btnUpdatePaymentCode" class="btn btn-primary" type="button" value="保存" onclick="updatePaymentCode()"/>
+					</td>				
+				</tr>	
+				</c:if>				
+				
 				<c:if test="${charge.status gt '30' }">
+				<tr>
+					<td class="tit">缴款码：</td>
+					<td>${charge.paymentCode}</td>
+					<td class="tit">虚拟账号：</td>
+					<td>${charge.virtualBankAccount}
+					</td>				
+				</tr>				
 				<tr>
 					<td class="tit">缴费金额（元）：</td>
 					<td style="text-align:right"><fmt:formatNumber value="${charge.payMoney}" pattern="#,##0.00"/></td>
@@ -291,6 +339,17 @@
 		   				  </tr>
 		   				</table>
 		   			</c:when>	
+		   			<c:when test="${charge.status eq '25' && fns:getUser().isYwy}">
+		   				<table width="100%">
+		   				  <tr>
+		   				    <td align="center">
+		   				      <input id="btnYes" class="btn btn-primary" type="button" value="提交" onclick="updatePaymentCodePass()"/>
+		   				      <input id="btnSettle" class="btn btn-primary" type="button" value="预览结算清单" onclick="showSettlementList()"/>
+		   				    </td>
+		   				  </tr>
+		   				</table>		   			    
+		   			    
+		   			</c:when>		   			
 		   			<c:when test="${charge.status eq '30' && fns:getUser().isYwy}">
 		   				<table width="100%">
 		   				  <tr>

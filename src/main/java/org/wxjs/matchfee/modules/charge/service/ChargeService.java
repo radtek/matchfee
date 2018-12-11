@@ -145,7 +145,13 @@ public class ChargeService extends CrudService<ChargeDao, Charge> {
 	
 	@Transactional(readOnly = false)
 	public void updateApprove(Charge charge) {
+		logger.debug("charge.getStatus():{}", charge.getStatus());
 		dao.updateApprove(charge);
+	}
+	
+	@Transactional(readOnly = false)
+	public void updatePaymentCode(Charge charge) {
+		dao.updatePaymentCode(charge);
 	}
 	
 	@Transactional(readOnly = false)

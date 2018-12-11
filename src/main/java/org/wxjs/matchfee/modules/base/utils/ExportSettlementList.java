@@ -204,8 +204,7 @@ public class ExportSettlementList {
 			}
 			*/
 			items.add(new String[]{gapHint, "", settlementList.getCharge().getMoneyGapDisplay() +"", 
-					               PdfUtil.toPlain(Global.getConfig("BANK_ACCOUNT"))});
-			
+					               settlementList.getCharge().getBankAccountMemo()});
 			
 			table = PdfUtil.generateTable(null, PdfUtil.getTextFont(true), items, PdfUtil.getTextFont(false), widthsGap, tableWidth);
 			document.add(table);

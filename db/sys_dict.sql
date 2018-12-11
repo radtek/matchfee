@@ -31,6 +31,7 @@ VALUES
 ('charge_status_05', '05', '退回', 'charge_status', 'charge_status', 80, '0','1',now(),'1',now()),
 ('charge_status_10', '10', '已申报待测算', 'charge_status', 'charge_status', 40, '0','1',now(),'1',now()),
 ('charge_status_20', '20', '已测算待审核', 'charge_status', 'charge_status', 30, '0','1',now(),'1',now()),
+('charge_status_25', '25', '缴款码', 'charge_status', 'charge_status', 25, '0','1',now(),'1',now()),
 ('charge_status_30', '30', '已审核待缴费', 'charge_status', 'charge_status', 20, '0','1',now(),'1',now()),
 ('charge_status_35', '35', '已缴费待确认', 'charge_status', 'charge_status', 10, '0','1',now(),'1',now()),
 ('charge_status_40', '40', '已缴费', 'charge_status', 'charge_status', 0, '0','1',now(),'1',now()),

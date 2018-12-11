@@ -57,6 +57,8 @@ CREATE TABLE `tcharge` (
   `approve_staff` varchar(256) NULL COMMENT '审核人',
   `approve_date` datetime NULL COMMENT '审核时间',
   `approve_memo` varchar(64) DEFAULT NULL COMMENT '审核备注',
+  `payment_code` varchar(64) DEFAULT NULL COMMENT '缴款码',
+  `virtual_bank_account` varchar(64) DEFAULT NULL COMMENT '虚拟账号',
   `confirm_staff` varchar(256) NULL COMMENT '确认人',
   `confirm_date` datetime NULL COMMENT '确认时间',
   `confirm_memo` varchar(64) DEFAULT NULL COMMENT '确认备注',

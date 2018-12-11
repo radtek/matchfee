@@ -23,6 +23,8 @@
 		a.approve_staff AS "approveStaff.id",
 		u3.name AS "approveStaff.name",
 		a.approve_date AS "approveDate",
+		a.payment_code AS "paymentCode",
+		a.virtual_bank_account AS "virtualBankAccount",
 		a.confirm_staff AS "confirmStaff.id",
 		u4.name AS "confirmStaff.name",
 		a.confirm_date AS "confirmDate",
@@ -247,6 +249,17 @@
 			status = #{status}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updatePaymentCode">
+		UPDATE tcharge SET
+			payment_code = #{paymentCode},
+			virtual_bank_account = #{virtualBankAccount}
+			<if test="status != null and status != ''">
+				,status = #{status}
+			</if>			
+			
+		WHERE id = #{id}
+	</update>	
 	
 	<update id="updateApprove">
 		UPDATE tcharge SET

@@ -187,6 +187,7 @@ public class Global {
     public static final String CHARGE_STATUS_REJECT = "05";
     public static final String CHARGE_STATUS_TO_CALCULATE = "10";
     public static final String CHARGE_STATUS_TO_APPROVE = "20";
+    public static final String CHARGE_STATUS_TO_PAYMENT_CODE = "25";
     public static final String CHARGE_STATUS_TO_UPLOAD = "30";
     public static final String CHARGE_STATUS_TO_CONFIRM = "35";
     public static final String CHARGE_STATUS_CONFIRMED = "40";
