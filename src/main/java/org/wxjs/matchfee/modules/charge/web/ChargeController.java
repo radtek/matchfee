@@ -172,7 +172,8 @@ public class ChargeController extends BaseController {
 		
 		if(charge.getDateFrom() == null){
 			Calendar cal=Calendar.getInstance();
-			cal.add(Calendar.MONTH, -6);
+			//cal.add(Calendar.MONTH, -6);
+			cal.setTime(DateUtils.parseDate("2018-01-01"));
 			charge.setDateFrom(cal.getTime());
 		}
 		
