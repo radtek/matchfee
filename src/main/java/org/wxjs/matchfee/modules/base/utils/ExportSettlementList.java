@@ -203,8 +203,9 @@ public class ExportSettlementList {
 				gapHint = "少缴费";
 			}
 			*/
+			String bankAccountMemo = settlementList.getCharge().getBankAccountMemo();
 			items.add(new String[]{gapHint, "", settlementList.getCharge().getMoneyGapDisplay() +"", 
-					               settlementList.getCharge().getBankAccountMemo()});
+					               PdfUtil.toPlain(bankAccountMemo)});
 			
 			table = PdfUtil.generateTable(null, PdfUtil.getTextFont(true), items, PdfUtil.getTextFont(false), widthsGap, tableWidth);
 			document.add(table);
